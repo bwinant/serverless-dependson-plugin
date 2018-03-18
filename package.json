@@ -1,0 +1,17 @@
+{
+  "name": "serverless-dependson-plugin",
+  "version": "1.0.0",
+  "description": "Automatically generates DependsOn references for AWS Lambdas to prevent EC2 RequestLimitExceeded errors",
+  "author": "Brian Winant",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bwinant/serverless-dependson-plugin"
+  },
+  "keywords": [
+    "serverless throttled EC2 rate request limit RequestLimitExceeded",
+    "serverless plugin"
+  ],
+  "bugs": "https://github.com/bwinant/serverless-dependson-plugin/issues",
+  "homepage": "https://github.com/bwinant/serverless-dependson-plugin#readme"
+}
