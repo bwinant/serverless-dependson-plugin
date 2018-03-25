@@ -3,10 +3,11 @@
 If you have a Serverless application that executes AWS Lambdas inside a VPC, then chances are you have encountered this error:
 
 ```
-Your request has been throttled by EC2, please make sure you have enough API rate limit. EC2 Error Code: RequestLimitExceeded. EC2 Error Message: Request limit exceeded.
+Your request has been throttled by EC2, please make sure you have enough API rate limit. 
+EC2 Error Code: RequestLimitExceeded. EC2 Error Message: Request limit exceeded.
 ```
 
-One solution to this error is to make all your lambdas dependent on each other in a chain. This will make Cloudformation deploy your lambdas sequentially and prevent the RequestLimitExceeded error.
+One solution to this error is to make all your lambdas dependent on each other in a chain. This will make CloudFormation deploy your lambdas sequentially and prevent the RequestLimitExceeded error.
 For more information on this error see: https://github.com/serverless/serverless/issues/3339
 
 The drawback to this solution is that you have to manually customize the `Resources` section of your `serverless.yml` and override the lambda definitions to set the CloudFormation [DependsOn](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html) attribute. This plugin will do that automatically.

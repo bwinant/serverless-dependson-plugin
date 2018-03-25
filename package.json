@@ -9,8 +9,10 @@
     "url": "https://github.com/bwinant/serverless-dependson-plugin"
   },
   "keywords": [
-    "serverless throttled EC2 rate request limit RequestLimitExceeded",
-    "serverless plugin"
+    "throttled EC2 rate limit RequestLimitExceeded",
+    "serverless request limit exceeded",
+    "serverless plugin",
+    "aws lambda dependson"
   ],
   "bugs": "https://github.com/bwinant/serverless-dependson-plugin/issues",
   "homepage": "https://github.com/bwinant/serverless-dependson-plugin#readme"
