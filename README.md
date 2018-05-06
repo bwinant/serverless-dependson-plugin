@@ -1,5 +1,8 @@
 # Serverless DependsOn Plugin
 
+[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+[![npm version](https://badge.fury.io/js/serverless-dependson-plugin.svg)](https://badge.fury.io/js/serverless-dependson-plugin)
+
 If you have a Serverless application that executes AWS Lambdas inside a VPC, then chances are you have encountered this error:
 
 ```
@@ -26,6 +29,11 @@ plugins:
 ```
 
 * Deploy without errors!
+
+* You can disable the plugin from the command line by passing the following option to serverless:
+```
+--dependson-plugin=[disabled|off|false]
+```
 
 ## Gotchas
 

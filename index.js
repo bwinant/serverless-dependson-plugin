@@ -13,6 +13,12 @@ class DependsOn {
     }
 
     addDependsOn() {
+        const flag = this.options['dependson-plugin'];
+        if (flag === 'disabled' || flag === 'off' || flag === 'false') {
+            this.serverless.cli.log('dependson-plugin disabled');
+            return;
+        }
+        
         const fnList = [];
         const fnMap = new Map();
         const logicalToName = new Map();
