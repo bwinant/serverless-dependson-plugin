@@ -1,6 +1,6 @@
 {
   "name": "serverless-dependson-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Serverless plugin that automatically generates DependsOn references for AWS Lambdas to prevent AWS RequestLimitExceeded errors",
   "author": "Brian Winant",
   "license": "MIT",
