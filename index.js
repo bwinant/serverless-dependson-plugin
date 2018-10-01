@@ -45,8 +45,6 @@ class DependsOn {
         }
 
         const fnList = [];
-        const fnMap = new Map();
-        const logicalToName = new Map();
 
         // Find function definitions and their CloudFormation logical ids
         const functions = this.serverless.service.functions;
@@ -56,8 +54,6 @@ class DependsOn {
 
                 const f = { name: name, logicalId: logicalId };
                 fnList.push(f);
-                fnMap.set(name, f);
-                logicalToName.set(logicalId, name);
             }
         }
 
@@ -68,22 +64,20 @@ class DependsOn {
             const parent = i - chains;
 
             fnList[i].dependsOn = fnList[parent].logicalId;
-            fnMap.set(fnList[i].name, fnList[i]);
             this.serverless.cli.log(fnList[i].name + ' dependsOn ' + fnList[parent].name);
         }
 
         // Update CloudFormation template
         const resources = this.serverless.service.provider.compiledCloudFormationTemplate.Resources;
-        for (let key in resources) {
-            if (resources.hasOwnProperty(key)) {
-                const resource = resources[key];
+
+        for (const fn of fnList) {
+            if (resources.hasOwnProperty(fn.logicalId)) {
+                const resource = resources[fn.logicalId];
                 if (resource.Type === 'AWS::Lambda::Function') {
-                    const fnName = logicalToName.get(key);
-                    const f = fnMap.get(fnName);
-                    if (f.dependsOn) {
-                       resource.DependsOn = (resource.DependsOn === undefined)
-                           ? f.dependsOn
-                           : [f.dependsOn].concat(resource.DependsOn);
+                    if (fn.dependsOn) {
+                        resource.DependsOn = (resource.DependsOn === undefined)
+                            ? fn.dependsOn
+                            : [fn.dependsOn].concat(resource.DependsOn);
                     }
                 }
             }
