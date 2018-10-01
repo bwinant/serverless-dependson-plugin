@@ -45,8 +45,6 @@ class DependsOn {
         }
 
         const fnList = [];
-        const fnMap = new Map();
-        const logicalToName = new Map();
 
         // Find function definitions and their CloudFormation logical ids
         const functions = this.serverless.service.functions;
@@ -56,39 +54,30 @@ class DependsOn {
 
                 const f = { name: name, logicalId: logicalId };
                 fnList.push(f);
-                fnMap.set(name, f);
-                logicalToName.set(logicalId, name);
             }
         }
 
         const chains = this.getChains();
-        const chainLength = Math.floor(fnList.length / chains);
 
         // Generate dependsOn chain(s)
-        let count = 0;
-        for (let i = 0; i < fnList.length; i++) {
-            if (count === chainLength) {
-                count = 0;
-            }
+        for (let i = chains; i < fnList.length; i++) {
+            const parent = i - chains;
 
-            if (count > 0) {
-                fnList[i].dependsOn = fnList[i - 1].logicalId;
-                fnMap.set(fnList[i].name, fnList[i]);
-                this.serverless.cli.log(fnList[i].name + ' dependsOn ' + fnList[i - 1].name);
-            }
-            count++;
+            fnList[i].dependsOn = fnList[parent].logicalId;
+            this.serverless.cli.log(fnList[i].name + ' dependsOn ' + fnList[parent].name);
         }
 
         // Update CloudFormation template
         const resources = this.serverless.service.provider.compiledCloudFormationTemplate.Resources;
-        for (let key in resources) {
-            if (resources.hasOwnProperty(key)) {
-                const resource = resources[key];
+
+        for (const fn of fnList) {
+            if (resources.hasOwnProperty(fn.logicalId)) {
+                const resource = resources[fn.logicalId];
                 if (resource.Type === 'AWS::Lambda::Function') {
-                    const fnName = logicalToName.get(key);
-                    const f = fnMap.get(fnName);
-                    if (f.dependsOn) {
-                       resource.DependsOn = f.dependsOn;
+                    if (fn.dependsOn) {
+                        resource.DependsOn = (resource.DependsOn === undefined)
+                            ? fn.dependsOn
+                            : [fn.dependsOn].concat(resource.DependsOn);
                     }
                 }
             }
