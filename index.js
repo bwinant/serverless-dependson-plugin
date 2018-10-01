@@ -88,7 +88,9 @@ class DependsOn {
                     const fnName = logicalToName.get(key);
                     const f = fnMap.get(fnName);
                     if (f.dependsOn) {
-                       resource.DependsOn = f.dependsOn;
+                       resource.DependsOn = (resource.DependsOn === undefined)
+                           ? f.dependsOn
+                           : [f.dependsOn].concat(resource.DependsOn);
                     }
                 }
             }
