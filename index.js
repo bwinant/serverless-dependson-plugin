@@ -62,21 +62,14 @@ class DependsOn {
         }
 
         const chains = this.getChains();
-        const chainLength = Math.floor(fnList.length / chains);
 
         // Generate dependsOn chain(s)
-        let count = 0;
-        for (let i = 0; i < fnList.length; i++) {
-            if (count === chainLength) {
-                count = 0;
-            }
+        for (let i = chains; i < fnList.length; i++) {
+            const parent = i - chains;
 
-            if (count > 0) {
-                fnList[i].dependsOn = fnList[i - 1].logicalId;
-                fnMap.set(fnList[i].name, fnList[i]);
-                this.serverless.cli.log(fnList[i].name + ' dependsOn ' + fnList[i - 1].name);
-            }
-            count++;
+            fnList[i].dependsOn = fnList[parent].logicalId;
+            fnMap.set(fnList[i].name, fnList[i]);
+            this.serverless.cli.log(fnList[i].name + ' dependsOn ' + fnList[parent].name);
         }
 
         // Update CloudFormation template
