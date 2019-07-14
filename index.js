@@ -51,9 +51,7 @@ class DependsOn {
         for (let name in functions) {
             if (functions.hasOwnProperty(name)) {
                 const logicalId = this.provider.naming.getLambdaLogicalId(name);
-
-                const f = { name: name, logicalId: logicalId };
-                fnList.push(f);
+                fnList.push({ name: name, logicalId: logicalId });
             }
         }
 
